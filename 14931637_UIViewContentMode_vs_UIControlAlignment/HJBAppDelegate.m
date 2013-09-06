@@ -8,42 +8,110 @@
 
 #import "HJBAppDelegate.h"
 
+@interface HJBViewController : UIViewController
+
+@property (nonatomic) UIButton *leftContentModeButton;
+@property (nonatomic) UIButton *leftContentHorizontalAlignmentButton;
+@property (nonatomic) UIButton *topContentModeButton;
+@property (nonatomic) UIButton *topContentVerticalAlignmentButton;
+
+@end
+
 @implementation HJBAppDelegate
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
+    self.window.rootViewController = [HJBViewController new];
+    
     [self.window makeKeyAndVisible];
     return YES;
 }
 
-- (void)applicationWillResignActive:(UIApplication *)application
-{
-    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+@end
+
+@implementation HJBViewController
+
+- (void)loadView {
+    [super loadView];
+    
+    self.leftContentModeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    self.leftContentModeButton.backgroundColor = [UIColor redColor];
+    self.leftContentModeButton.autoresizingMask =
+    UIViewAutoresizingFlexibleBottomMargin |
+    UIViewAutoresizingFlexibleWidth;
+    self.leftContentModeButton.contentMode = UIViewContentModeLeft;
+    self.leftContentModeButton.titleLabel.backgroundColor = [UIColor orangeColor];
+    [self.leftContentModeButton setTitle:@"CMLeft"
+                                forState:UIControlStateNormal];
+    [self.view addSubview:self.leftContentModeButton];
+    
+    self.leftContentHorizontalAlignmentButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    self.leftContentHorizontalAlignmentButton.backgroundColor = [UIColor yellowColor];
+    self.leftContentHorizontalAlignmentButton.autoresizingMask =
+    UIViewAutoresizingFlexibleBottomMargin |
+    UIViewAutoresizingFlexibleWidth;
+    self.leftContentHorizontalAlignmentButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    self.leftContentHorizontalAlignmentButton.titleLabel.backgroundColor = [UIColor greenColor];
+    [self.leftContentHorizontalAlignmentButton setTitle:@"CHALeft"
+                                               forState:UIControlStateNormal];
+    [self.view addSubview:self.leftContentHorizontalAlignmentButton];
+    
+    self.topContentModeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    self.topContentModeButton.backgroundColor = [UIColor blueColor];
+    self.topContentModeButton.contentMode = UIViewContentModeTop;
+    self.topContentModeButton.titleLabel.backgroundColor = [UIColor purpleColor];
+    [self.topContentModeButton setTitle:@"CMTop"
+                               forState:UIControlStateNormal];
+    [self.view addSubview:self.topContentModeButton];
+    
+    self.topContentVerticalAlignmentButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    self.topContentVerticalAlignmentButton.backgroundColor = [UIColor brownColor];
+    self.topContentVerticalAlignmentButton.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
+    self.topContentVerticalAlignmentButton.titleLabel.backgroundColor = [UIColor grayColor];
+    [self.topContentVerticalAlignmentButton setTitle:@"CHATop"
+                                            forState:UIControlStateNormal];
+    [self.view addSubview:self.topContentVerticalAlignmentButton];
+    
+    [self layoutButtons];
 }
 
-- (void)applicationDidEnterBackground:(UIApplication *)application
-{
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+    
+    [self layoutButtons];
 }
 
-- (void)applicationWillEnterForeground:(UIApplication *)application
-{
-    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-}
-
-- (void)applicationDidBecomeActive:(UIApplication *)application
-{
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-}
-
-- (void)applicationWillTerminate:(UIApplication *)application
-{
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+- (void)layoutButtons {    
+    CGRect horizontalButtonsRect;
+    CGRect verticalButtonsRect;
+    CGRectDivide(self.view.bounds,
+                 &horizontalButtonsRect,
+                 &verticalButtonsRect,
+                 floor(CGRectGetHeight(self.view.bounds) / 2),
+                 CGRectMinYEdge);
+    
+    CGRect leftContentModeButtonFrame;
+    CGRect leftContentHorizontalAlignmentButtonFrame;
+    CGRectDivide(horizontalButtonsRect,
+                 &leftContentModeButtonFrame,
+                 &leftContentHorizontalAlignmentButtonFrame,
+                 floor(CGRectGetHeight(horizontalButtonsRect) / 2),
+                 CGRectMinYEdge);
+    
+    CGRect topContentModeButtonFrame;
+    CGRect topContentVerticalAlignmentButtonFrame;
+    CGRectDivide(verticalButtonsRect,
+                 &topContentModeButtonFrame,
+                 &topContentVerticalAlignmentButtonFrame,
+                 floor(CGRectGetWidth(verticalButtonsRect) / 2),
+                 CGRectMinXEdge);
+    
+    self.leftContentModeButton.frame = leftContentModeButtonFrame;
+    self.leftContentHorizontalAlignmentButton.frame = leftContentHorizontalAlignmentButtonFrame;
+    self.topContentModeButton.frame = topContentModeButtonFrame;
+    self.topContentVerticalAlignmentButton.frame = topContentVerticalAlignmentButtonFrame;
 }
 
 @end
